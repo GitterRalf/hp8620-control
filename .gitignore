@@ -1,0 +1,4 @@
+/build/
+/build-*/
+/installer/
+CMakeUserPresets.json

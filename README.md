@@ -4,13 +4,9 @@ Eigenständige Windows-Anwendung für die GPIB-Steuerung des HP8620 mit Qt 6 Wid
 
 ## Bildschirmaufnahmen
 
-**Helle Darstellung**
-
-![HP8620 Control in heller Darstellung](docs/screenshots/hp8620-hell.png)
-
-**Dunkle Darstellung**
-
-![HP8620 Control in dunkler Darstellung](docs/screenshots/hp8620-dunkel.png)
+| Hell | Dunkel |
+| --- | --- |
+| <a href="docs/screenshots/hp8620-hell.png"><img src="docs/screenshots/hp8620-hell.png" alt="HP8620 Control in heller Darstellung" width="400"></a> | <a href="docs/screenshots/hp8620-dunkel.png"><img src="docs/screenshots/hp8620-dunkel.png" alt="HP8620 Control in dunkler Darstellung" width="400"></a> |
 
 ## Installation
 

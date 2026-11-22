@@ -2,6 +2,8 @@
 
 Eigenständige Windows-Anwendung für die GPIB-Steuerung des HP8620 mit Qt Widgets. Die Versionsnummer steht in [version.h](version.h).
 
+Entwickelt und gepflegt von Ralf Tralow mit Unterstützung von OpenAI Codex.
+
 Die Anwendung ist eine Neuimplementierung der HP8620-Steuerung aus dem ursprünglichen Java-Projekt OsciViewer von Ralf Tralow. Die Bandvorgaben und die Gerätebefehle stammen aus diesem Projekt. [OsciViewer auf SourceForge](https://sourceforge.net/projects/osziviewer/)
 
 ## Bildschirmaufnahmen

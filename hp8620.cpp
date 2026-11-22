@@ -25,7 +25,7 @@ QByteArray voltageCommand(FrequencyBand band, double mhz)
             "Hp8620", "Die Sollfrequenz liegt außerhalb des aktiven Bands.");
         throw std::out_of_range(message.toStdString());
     }
-    const auto millivolts = std::lround(10000.0 * ((mhz - band.lower) / (band.upper - band.lower)));
+    const auto millivolts = std::llround(10000.0 * ((mhz - band.lower) / (band.upper - band.lower)));
     // The HP 8620C Option 011 represents the leading digit 10 by ':'.
     if (millivolts == 10000) {
         return "V:000E";

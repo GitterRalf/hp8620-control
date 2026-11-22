@@ -309,7 +309,7 @@ QFrame *MainWindow::frequencyPanel()
         }
     });
     connect(slider, &QSlider::sliderReleased, this, &MainWindow::applyFrequency);
-    connect(frequency, &QDoubleSpinBox::valueChanged, this, &MainWindow::displayFrequency);
+    connect(frequency, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &MainWindow::displayFrequency);
     connect(apply, &QPushButton::clicked, this, &MainWindow::applyFrequency);
     auto *enter = new QShortcut(QKeySequence(Qt::Key_Return), frequency);
     enter->setContext(Qt::WidgetWithChildrenShortcut);
@@ -426,7 +426,7 @@ void MainWindow::createMenus()
         connect(action, &QAction::triggered, this, [this, dark] { setDarkTheme(dark); });
     }
     settingsMenu->addSeparator();
-    saveSettingsAction = settingsMenu->addAction(QString(), QKeySequence::Save, this, &MainWindow::saveSettings);
+    saveSettingsAction = settingsMenu->addAction(QString(), this, &MainWindow::saveSettings, QKeySequence::Save);
     saveSettingsAction->setObjectName(QStringLiteral("saveSettings"));
 
     auto *right = new QMenuBar(bar);
@@ -637,7 +637,7 @@ void MainWindow::editConnection()
     };
     serial->setCurrentText(target.serialPort);
     updateInterface(adapter->currentIndex());
-    connect(adapter, &QComboBox::currentIndexChanged, &dialog, updateInterface);
+    connect(adapter, qOverload<int>(&QComboBox::currentIndexChanged), &dialog, updateInterface);
 
     auto *address = new QSpinBox;
     address->setObjectName(QStringLiteral("gpibAddress"));

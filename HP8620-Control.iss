@@ -9,11 +9,24 @@
 #define IconResource FileOpen(SourcePath + "assets\app.rc")
 #define Hp8620Icon ReadQuoted(FileRead(IconResource))
 #expr FileClose(IconResource)
-#define Hp8620Name "HP8620 Control"
+#ifndef BuildArch
+  #define BuildArch "x64"
+#endif
+#if BuildArch == "x86"
+  #define Hp8620Name "HP8620 Control (32 Bit)"
+  #define DeviceAppId "{{8E78A5FF-BE88-54D0-A6BC-77652358D856}"
+  #define DeviceBuildDir "build-x86"
+#elif BuildArch == "x64"
+  #define Hp8620Name "HP8620 Control"
+  #define DeviceAppId "{{6C76E0F3-ED7D-48F7-BF6F-92A43C0CD57E}"
+  #define DeviceBuildDir "build"
+#else
+  #error BuildArch must be x86 or x64.
+#endif
 #define Hp8620Exe "HP8620-Control.exe"
 
 [Setup]
-AppId={{6C76E0F3-ED7D-48F7-BF6F-92A43C0CD57E}
+AppId={#DeviceAppId}
 AppName={#Hp8620Name}
 AppVersion={#Hp8620Version}
 AppVerName={#Hp8620Name} {#Hp8620Version}
@@ -24,13 +37,17 @@ DefaultDirName={pf}\{#Hp8620Name}
 DefaultGroupName={#Hp8620Name}
 AllowNoIcons=yes
 PrivilegesRequired=admin
+#if BuildArch == "x64"
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
+#else
+ArchitecturesAllowed=x86 x64
+#endif
 ; Inno 5.3.5 can see modern Windows as 6.2 due to its legacy manifest.
 SetupIconFile=assets\{#Hp8620Icon}
 UninstallDisplayIcon={app}\{#Hp8620Exe}
 OutputDir=installer
-OutputBaseFilename=HP8620-Control-Setup-{#Hp8620Version}-x64
+OutputBaseFilename=HP8620-Control-Setup-{#Hp8620Version}-{#BuildArch}
 Compression=lzma
 SolidCompression=yes
 
@@ -43,15 +60,19 @@ Name: "french"; MessagesFile: "compiler:Languages\French.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; Flags: unchecked
 
 [Files]
-Source: "build\{#Hp8620Exe}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "build\*.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "build\generic\*.dll"; DestDir: "{app}\generic"; Flags: ignoreversion
-Source: "build\iconengines\*.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion
-Source: "build\imageformats\*.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion
-Source: "build\networkinformation\*.dll"; DestDir: "{app}\networkinformation"; Flags: ignoreversion
-Source: "build\platforms\*.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "build\styles\*.dll"; DestDir: "{app}\styles"; Flags: ignoreversion
-Source: "build\tls\*.dll"; DestDir: "{app}\tls"; Flags: ignoreversion
+#if BuildArch == "x86"
+Source: "{#DeviceBuildDir}\qt.conf"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DeviceBuildDir}\bearer\*.dll"; DestDir: "{app}\bearer"; Flags: ignoreversion skipifsourcedoesntexist
+#endif
+Source: "{#DeviceBuildDir}\{#Hp8620Exe}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DeviceBuildDir}\*.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#DeviceBuildDir}\generic\*.dll"; DestDir: "{app}\generic"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#DeviceBuildDir}\iconengines\*.dll"; DestDir: "{app}\iconengines"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#DeviceBuildDir}\imageformats\*.dll"; DestDir: "{app}\imageformats"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#DeviceBuildDir}\networkinformation\*.dll"; DestDir: "{app}\networkinformation"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#DeviceBuildDir}\platforms\*.dll"; DestDir: "{app}\platforms"; Flags: ignoreversion
+Source: "{#DeviceBuildDir}\styles\*.dll"; DestDir: "{app}\styles"; Flags: ignoreversion skipifsourcedoesntexist
+Source: "{#DeviceBuildDir}\tls\*.dll"; DestDir: "{app}\tls"; Flags: ignoreversion skipifsourcedoesntexist
 Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "THIRD-PARTY-NOTICES.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "licenses\*.txt"; DestDir: "{app}\licenses"; Flags: ignoreversion

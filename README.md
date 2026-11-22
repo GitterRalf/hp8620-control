@@ -1,6 +1,6 @@
 # HP8620 Control
 
-Eigenständige Windows-Anwendung für die GPIB-Steuerung des HP8620 mit Qt 6 Widgets. Die Bandvorgaben und die Gerätebefehle stammen aus OsciViewer von Ralf Tralow. Die Versionsnummer steht in [version.h](version.h).
+Eigenständige Windows-Anwendung für die GPIB-Steuerung des HP8620 mit Qt Widgets. Die Bandvorgaben und die Gerätebefehle stammen aus OsciViewer von Ralf Tralow. Die Versionsnummer steht in [version.h](version.h).
 
 ## Bildschirmaufnahmen
 
@@ -10,7 +10,7 @@ Eigenständige Windows-Anwendung für die GPIB-Steuerung des HP8620 mit Qt 6 Wid
 
 ## Installation
 
-Das aktuelle Windows-x64-Setup steht unter [Releases](https://github.com/GitterRalf/hp8620-control/releases). Der Standardordner ist **C:\Programme\HP8620 Control**. Für die Installation sind Administratorrechte nötig. Der zum Adapter passende NI-488.2- oder USB-COM-Treiber wird separat installiert.
+Die aktuellen Windows-Setups für x86 und x64 stehen unter [Releases](https://github.com/GitterRalf/hp8620-control/releases). Der Standardordner für x64 ist **C:\Programme\HP8620 Control**. Für die Installation sind Administratorrechte nötig. Der zum Adapter passende NI-488.2- oder USB-COM-Treiber wird separat installiert.
 
 ## Bedienung
 
@@ -36,8 +36,23 @@ cmake --build build
 & "$qtKit/bin/windeployqt.exe" --release --no-translations --no-system-d3d-compiler --no-opengl-sw '.\build\HP8620-Control.exe'
 ```
 
-Für den Hardwarebetrieb benötigt der NI-Adapter einen installierten 64-Bit-NI-488.2-Treiber. Der Elektor-Adapter benötigt die klassische Elektor-Firmware mit W-/G-Kommandos und einen passenden USB-COM-Treiber. [Elektor, April 2011](https://d1.amobbs.com/bbs_upload782111/files_49/ourdev_708675KI0LUX.pdf).
+Für den Hardwarebetrieb benötigt der NI-Adapter einen installierten NI-488.2-Treiber mit Unterstützung für die Programmarchitektur. Der Elektor-Adapter benötigt die klassische Elektor-Firmware mit W-/G-Kommandos und einen passenden USB-COM-Treiber. [Elektor, April 2011](https://d1.amobbs.com/bbs_upload782111/files_49/ourdev_708675KI0LUX.pdf).
 
 Das Skript `.\build.ps1` baut und stellt die Laufzeitdateien im Build-Ordner bereit. Anschließend erstellt Inno Setup aus [HP8620-Control.iss](HP8620-Control.iss) die Setup-Datei im Ordner **installer**.
 
 Der HP8620-Quellcode und das animierte OsciViewer-Logo von Ralf Tralow stehen unter der [MIT-Lizenz](LICENSE). Die Lizenzhinweise zur Laufzeit stehen in [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).
+
+### Windows-Architekturen
+
+Die x86-Ausgabe verwendet Qt 5.15.19 mit MinGW 8.1 und hat einen eigenen
+Installationsordner **HP8620 Control (32 Bit)**. Auf 64-Bit-Windows können beide
+Ausgaben parallel installiert werden. Die x64-Ausgabe verwendet weiterhin
+Qt 6 und ist beim Build der Standard.
+
+Der Build für x86 nutzt `build-x86`, der Build für x64 den Ordner `build`.
+Die Installer entstehen im Projektordner mit folgenden Aufrufen.
+
+```powershell
+ISCC.exe HP8620-Control.iss
+ISCC.exe /DBuildArch=x86 HP8620-Control.iss
+```
